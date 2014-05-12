@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from PyQt4 import QtCore,QtGui
 import random
 
@@ -183,14 +184,13 @@ class Game2048(QtGui.QWidget):
 		self.lastPoint=e.pos()
 
 	def mouseReleaseEvent(self,e):
-		if self.resetRect.contains(self.lastPoint) and self.resetRect.contains(e.pos()):
+		if self.resetRect.contains(self.lastPoint.x(),self.lastPoint.y()) and self.resetRect.contains(e.pos().x(),e.pos().y()):
 			if QtGui.QMessageBox.question(self,'','Are you sure you want to start a new game?',
 					QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)==QtGui.QMessageBox.Yes:
 				self.reset_game()
-		elif gameRunning and self.lastPoint is not None:
+		elif self.gameRunning and self.lastPoint is not None:
 			dx=e.pos().x()-self.lastPoint.x()
 			dy=e.pos().y()-self.lastPoint.y()
-			print(str(dx)+' '+str(dy))
 			if abs(dx)>abs(dy) and abs(dx)>10:
 				if dx>0:
 					self.right()
