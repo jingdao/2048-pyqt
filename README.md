@@ -20,6 +20,10 @@ embed in another PyQt program
 
 	from 2048-pyqt import Game2048
 	g = Game2048(parent,width,gridSize)
+	#call these functions to change settings on the fly!
+	g.move(x,y)
+	g.resize(width,height)
+	g.changeGridSize(5)
 	g.show()
 
 Features

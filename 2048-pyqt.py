@@ -11,11 +11,9 @@ class Game2048(QtGui.QWidget):
 		QtGui.QWidget.__init__(self,parent)
 		self.gameRunning=False
 		self.panelHeight=80
-		self.resize(QtCore.QSize(width,width+self.panelHeight))
 		self.backgroundBrush=QtGui.QBrush(QtGui.QColor(0xbbada0))
 		self.gridSize=gridSize
 		self.tileMargin=16
-		self.tileSize=(width-self.tileMargin*(self.gridSize+1))/self.gridSize
 		self.gridOffsetX=self.tileMargin
 		self.gridOffsetY=self.panelHeight+self.tileMargin
 		self.brushes={
@@ -35,7 +33,6 @@ class Game2048(QtGui.QWidget):
 		}
 		self.lightPen=QtGui.QPen(QtGui.QColor(0xf9f6f2))
 		self.darkPen=QtGui.QPen(QtGui.QColor(0x776e65))
-		self.font=QtGui.QFont('Arial',self.tileSize/4)
 		self.scoreRect=QtCore.QRect(10,10,80,self.panelHeight-20)
 		self.hiScoreRect=QtCore.QRect(100,10,80,self.panelHeight-20)
 		self.resetRect=QtCore.QRectF(190,10,80,self.panelHeight-20)
@@ -43,6 +40,16 @@ class Game2048(QtGui.QWidget):
 		self.hiScoreLabel=QtCore.QRectF(100,25,80,self.panelHeight-30)
 		self.hiScore=0
 		self.lastPoint=None
+		self.resize(QtCore.QSize(width,width+self.panelHeight))
+		self.reset_game()
+
+	def resizeEvent(self,e):
+		width=min(e.size().width(),e.size().height()-self.panelHeight)
+		self.tileSize=(width-self.tileMargin*(self.gridSize+1))/self.gridSize
+		self.font=QtGui.QFont('Arial',self.tileSize/4)
+
+	def changeGridSize(self,x):
+		self.gridSize=x
 		self.reset_game()
 
 	def reset_game(self):
@@ -244,6 +251,9 @@ class Game2048(QtGui.QWidget):
 if __name__=='__main__':
 	app=QtGui.QApplication([])
 	g = Game2048(None,340,4)
+	g.move(0,0)
+	#g.resize(500,400)
+	g.changeGridSize(3)
 	g.setWindowTitle('2048 Game')
 	g.show()
 	app.exec_()
